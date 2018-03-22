@@ -29,6 +29,7 @@ if (isProduction) {
 
 // uncomment after placing your favicon in /publicnpm
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(require("./routes"));
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

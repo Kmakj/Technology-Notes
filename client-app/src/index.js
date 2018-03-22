@@ -4,7 +4,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-browser-router";
 import "./index.css";
-import App from "./components/App";
+import App from "./Components/App";
 import registerServiceWorker from "./registerServiceWorker";
 
 const defaultState = {
