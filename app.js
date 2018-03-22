@@ -18,7 +18,9 @@ app.set("view engine", "jade");
 if (isProduction) {
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect("mongodb://localhost/killick", function(err) {
+  mongoose.connect("mongodb://localhost/technology-notes-database", function(
+    err
+  ) {
     if (err) return console.error(err);
     console.log("THE Mongo DB is connected");
   });
