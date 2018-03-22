@@ -5,10 +5,10 @@ const mapStateToProps = state => ({
   appName: state.appName
 });
 
-class Home extends Component {
+class Dashboard extends Component {
   render() {
-    return <div>HomePage</div>;
+    return <div>Dashboard</div>;
   }
 }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Dashboard);

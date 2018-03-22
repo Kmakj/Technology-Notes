@@ -27,7 +27,7 @@ if (isProduction) {
   mongoose.set("debug", true);
 }
 
-// uncomment after placing your favicon in /public
+// uncomment after placing your favicon in /publicnpm
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger("dev"));
 app.use(bodyParser.json());
