@@ -1,6 +1,6 @@
 //index.js root file
 const defaultState = {
-  appName: "Meowdium",
+  appName: "Technology-Notes",
   articles: null
 };
 
