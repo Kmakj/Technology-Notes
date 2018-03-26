@@ -9,8 +9,9 @@
     * [Updating the Rendered Element](#updating-the-rendered-element)
     * [React Only Updates What’s Necessary](#react-only-updates-what's-necessary)
   * [Component and Props](#components-and-props)
-
-<!-- /TOC -->
+    * [Functional and Class Components](#functional-and-class-components)
+    * [Rendering a Component](#rendering-a-component)
+      <!-- /TOC -->
 
 # Technology Readme
 
@@ -162,3 +163,32 @@ class Welcome extends React.Component {
 ```
 
 The above two components are equivalent from React’s point of view.
+
+#### Rendering a Component
+
+Previously, we only encountered React elements that represent DOM tags:
+
+```
+const element = <div />;
+```
+
+However, elements can also represent user-defined components:
+
+```
+const element = <Welcome name="Sara" />;
+```
+
+When React sees an element representing a user-defined component, it passes JSX attributes to this component as a single object. We call this object “props”.
+The following code will render "Hello, Sara" on the page.
+
+```
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+const element = <Welcome name="Sara" />;
+ReactDOM.render(
+  element,
+  document.getElementById('root')
+);
+```
