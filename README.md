@@ -4,6 +4,7 @@
 * [React](#react)
   * [JSX](#jsx)
     * [JSX Represents Objects](#jsx-represents-objects)
+  * [Rendering Elements](#rendering-elements)
 
 <!-- /TOC -->
 
