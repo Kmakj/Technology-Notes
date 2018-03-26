@@ -1,14 +1,22 @@
 <!-- TOC -->
 
 * [Intro](#technology-readme)
+
 * [React](#react)
-* [JSX](#jsx)
-* [JSX Represents Objects](#jsx-represents-objects)
-* [Rendering Elements](#rendering-elements)
-* [Root DOM Node](#root-dom-node)
-* [Updating the Rendered Element](#updating-the-rendered-element)
-* [React Only Updates What’s Necessary](#react-only-updates-what's-necessary)
-* [Rendering Components](#rendering-components)
+
+  * [JSX](#jsx)
+
+    * [JSX Represents Objects](#jsx-represents-objects)
+
+  * [Rendering Elements](#rendering-elements)
+
+    * [Root DOM Node](#root-dom-node)
+
+    * [Updating the Rendered Element](#updating-the-rendered-element)
+
+    * [React Only Updates What’s Necessary](#react-only-updates-what's-necessary)
+
+  * [Rendering Components](#rendering-components)
 
 <!-- /TOC -->
 
@@ -136,3 +144,5 @@ It calls ReactDOM.render() every second from a setInterval() callback.
 #### React Only Updates What’s Necessary
 
 React DOM compares the element and its children to the previous one, and only applies the DOM updates necessary to bring the DOM to the desired state.
+
+## Rendering Components
