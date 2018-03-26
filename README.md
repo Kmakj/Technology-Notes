@@ -2,8 +2,10 @@
 
 * [Intro](#technology-readme)
 * [React](#react)
-  * [JSX](#jsx) \* [JSX Represents Objects](#jsx-represents-objects)
-  * [Rendering Elements](#rendering-elements) \* [Root DOM Node](#root-dom-node)
+  * [JSX](#jsx)
+    * [JSX Represents Objects](#jsx-represents-objects)
+  * [Rendering Elements](#rendering-elements)
+    * [Root DOM Node](#root-dom-node)
 
 <!-- /TOC -->
 
