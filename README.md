@@ -17,10 +17,6 @@
     * [Adding Lifecyle methods to a Class](#adding-lifecycle-methods-to-a-class)
       <!-- /TOC -->
 
-# Technology Readme
-
-This is a basic readme which will be a brief on all technology used in the project.
-
 # React
 
 React is a component based method for rending UI using JavaScript expressions.
