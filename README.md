@@ -4,7 +4,7 @@ This is a basic readme which will be a brief on all technology used in the proje
 
 # React
 
-React is a component based method for rending UI using javascript. Javascript expression can be toggled by putting everything in {} brackets, which will allow any javascript to be run from within.
+React is a component based method for rending UI using JavaScript expressions. JavaScript expressions, JSX, can be toggled by putting everything in {} brackets.
 
 ## JSX
 
@@ -49,3 +49,18 @@ const element = React.createElement(
 'Hello, world!'
 );
 ```
+
+React.createElement() performs a few checks to help you write bug-free code but essentially it creates an object like this:
+
+```
+// Note: this structure is simplified
+const element = {
+  type: 'h1',
+  props: {
+    className: 'greeting',
+    children: 'Hello, world'
+  }
+};
+```
+
+These objects are called “React elements”. You can think of them as descriptions of what you want to see on the screen. React reads these objects and uses them to construct the DOM and keep it up to date.
