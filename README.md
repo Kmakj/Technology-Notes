@@ -5,7 +5,8 @@
   * [JSX](#jsx)
     * [JSX Represents Objects](#jsx-represents-objects)
   * [Rendering Elements](#rendering-elements)
-    * [Root DOM Node](#root-dom-node)
+    * [Root DOM Node](#root-dom-node)s
+    * [Updating the Rendered Element](#updating-the-rendered-element)
 
 <!-- /TOC -->
 
