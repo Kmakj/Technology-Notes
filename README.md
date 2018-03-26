@@ -1,9 +1,9 @@
 <!-- TOC -->
 
-* [Intro](#Technology-Readme)
-* [React](#React)
-  * [JSX](#JSX)
-    * [JSX Represents Objects](#JSX-Represents-Objects)
+* [Intro](#technology-readme)
+* [React](#react)
+  * [JSX](#jsx)
+    * [JSX Represents Objects](#jsx-represents-objects)
 
 <!-- /TOC -->
 
