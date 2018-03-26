@@ -1,21 +1,13 @@
 <!-- TOC -->
 
 * [Intro](#technology-readme)
-
 * [React](#react)
-
   * [JSX](#jsx)
-
     * [JSX Represents Objects](#jsx-represents-objects)
-
   * [Rendering Elements](#rendering-elements)
-
     * [Root DOM Node](#root-dom-node)
-
     * [Updating the Rendered Element](#updating-the-rendered-element)
-
     * [React Only Updates What’s Necessary](#react-only-updates-what's-necessary)
-
   * [Rendering Components](#rendering-components)
 
 <!-- /TOC -->
