@@ -1,6 +1,5 @@
 <!-- TOC -->
 
-* [Intro](#technology-readme)
 * [React](#react)
   * [JSX](#jsx)
     * [JSX Represents Objects](#jsx-represents-objects)
