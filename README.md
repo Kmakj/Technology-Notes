@@ -12,8 +12,9 @@
     * [Functional and Class Components](#functional-and-class-components)
     * [Rendering a Component](#rendering-a-component)
     * [Props are Read-Only](props-are-read-only)
-  * [State and Lifecycle](#state-and-lifecyclew)
-    <!-- /TOC -->
+  * [State and Lifecycle](#state-and-lifecycle)
+    * [Converting a Function to a Class](#converting-a-function-to-a-class)
+      <!-- /TOC -->
 
 # Technology Readme
 
