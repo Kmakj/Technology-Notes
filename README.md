@@ -297,7 +297,8 @@ function Comment(props) {
 }
 ```
 
-####Props are Read-Only
+#### Props are Read-Only
+
 Whether you declare a component as a function or a class, it must never modify its own props. Consider this sum function:
 
 ```
@@ -319,3 +320,92 @@ function withdraw(account, amount) {
 React is pretty flexible but it has a single strict rule:
 
 > **All React components must act like pure functions with respect to their props.**
+
+## State and Lifecycle
+
+So far we have only learned one way to update the UI.
+
+We call ReactDOM.render() to change the rendered output:
+
+```
+function tick() {
+  const element = (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  ReactDOM.render(
+    element,
+    document.getElementById('root')
+  );
+}
+setInterval(tick, 1000);
+```
+
+In this section, we will learn how to make the Clock component truly reusable and encapsulated. It will set up its own timer and update itself every second.
+
+We can start by encapsulating how the clock looks:
+
+```
+function Clock(props) {
+  return (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>It is {props.date.toLocaleTimeString()}.</h2>
+    </div>
+  );
+}
+
+function tick() {
+  ReactDOM.render(
+    <Clock date={new Date()} />,
+    document.getElementById('root')
+  );
+}
+setInterval(tick, 1000);
+```
+
+However, it misses a crucial requirement: the fact that the Clock sets up a timer and updates the UI every second should be an implementation detail of the Clock.
+
+Ideally we want to write this once and have the Clock update itself:
+
+```
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+#### Converting a Function to a Class
+
+To implement this, we need to add “state” to the Clock component.
+
+State is similar to props, but it is private and fully controlled by the component.
+
+Components defined as classes have some additional features. Local state is exactly that: a feature available only to classes.
+
+1.  You can convert a functional component like Clock to a class in five steps:
+
+2.  Create an ES6 class, with the same name, that extends React.Component.
+
+3.  Add a single empty method to it called render().
+
+4.  Move the body of the function into the render() method.
+
+5.  Replace props with this.props in the render() body.
+
+6.  Delete the remaining empty function declaration.
+
+```
+class Clock extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
