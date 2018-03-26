@@ -85,4 +85,4 @@ const element = <h1>Hello, world</h1>;
 
 Unlike browser DOM elements, React elements are plain objects, and are cheap to create. React DOM takes care of updating the DOM to match the React elements.
 
-> **One might confuse elements with a more widely known concept of “components”. Elements are what components are “made of”, and we encourage you to read this section before jumping ahead.**
+> **One might confuse elements with a more widely known concept of “components”. Elements are what components are “made of”**
