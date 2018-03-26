@@ -93,7 +93,7 @@ Unlike browser DOM elements, React elements are plain objects, and are cheap to 
 
 #### Root DOM Node
 
-Let’s say there is a <div> somewhere in your HTML file:
+Let’s say there is a `<div>` somewhere in your HTML file:
 
 ```
 <div id="root"></div>
