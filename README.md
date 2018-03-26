@@ -20,19 +20,19 @@ React is a component based method for rending UI using JavaScript expressions.
 
 After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects. This means that you can use JSX inside of if statements and for loops, assign it to variables, accept it as arguments, and return it from functions:
 
-You may use quotes to specify string literals as attributes:
+* You may use quotes to specify string literals as attributes:
 
 ```
 const element = <div tabIndex="0"></div>;
 ```
 
-You may also use curly braces to embed a JavaScript expression in an attribute:
+* You may also use curly braces to embed a JavaScript expression in an attribute:
 
 ```
 const element = <img src={user.avatarUrl}></img>;
 ```
 
-If a tag is empty, you may close it immediately with />, like XML:
+* If a tag is empty, you may close it immediately with />, like XML:
 
 ```
 const element = <img src={user.avatarUrl} />;
