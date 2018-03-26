@@ -64,3 +64,15 @@ const element = {
 ```
 
 These objects are called “React elements”. You can think of them as descriptions of what you want to see on the screen. React reads these objects and uses them to construct the DOM and keep it up to date.
+
+## Rendering Elements
+
+An element describes what you want to see on the screen:
+
+```
+const element = <h1>Hello, world</h1>;
+```
+
+Unlike browser DOM elements, React elements are plain objects, and are cheap to create. React DOM takes care of updating the DOM to match the React elements.
+
+> One might confuse elements with a more widely known concept of “components”. Elements are what components are “made of”, and we encourage you to read this section before jumping ahead.
