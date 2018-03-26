@@ -14,6 +14,8 @@
     * [Props are Read-Only](props-are-read-only)
   * [State and Lifecycle](#state-and-lifecycle)
     * [Converting a Function to a Class](#converting-a-function-to-a-class)
+    * [Adding Local State to a Class](#adding-local-state-to-a-class)
+    * [Adding Lifecyle methods to a Class](#adding-lifecycle-methods-to-a-class)
       <!-- /TOC -->
 
 # Technology Readme
@@ -405,6 +407,71 @@ class Clock extends React.Component {
       <div>
         <h1>Hello, world!</h1>
         <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+```
+
+Clock is now defined as a class rather than a function.
+
+This lets us use additional features such as local state and lifecycle hooks.
+
+#### Adding Local State to a Class
+
+```
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Clock />,
+  document.getElementById('root')
+);
+```
+
+#### Adding Lifecycle Methods to a Class
+
+In applications with many components, it’s very important to free up resources taken by the components when they are destroyed.
+
+We want to set up a timer whenever the Clock is rendered to the DOM for the first time. This is called “mounting” in React.
+
+We also want to clear that timer whenever the DOM produced by the Clock is removed. This is called “unmounting” in React.
+
+We can declare special methods on the component class to run some code when a component mounts and unmounts:
+
+```
+class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Hello, world!</h1>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
       </div>
     );
   }
