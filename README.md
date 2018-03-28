@@ -1004,6 +1004,7 @@ Because we want to update a specific item in the array without resorting to muta
 
 #### Splitting Reducers
 
+Splitting Reducers
 Here is our code so far. It is rather verbose:
 
 ```
@@ -1089,9 +1090,9 @@ function todoApp(state = initialState, action) {
 
 Note that todos also accepts state—but it's an array! Now todoApp just gives it the slice of the state to manage, and todos knows how to update just that slice. This is called reducer composition, and it's the fundamental pattern of building Redux apps.
 
-Let's explore reducer composition more. Can we also extract a reducer managing just visibilityFilter? We can.
+Let's explore reducer composition more. Can we also extract a reducer managing just `visibilityFilter`? We can.
 
-Below our imports, let's use ES6 Object Destructuring to declare SHOW_ALL:
+Below our imports, let's use ES6 Object Destructuring to declare `SHOW_ALL`:
 
 ```
 const { SHOW_ALL } = VisibilityFilters
@@ -1112,91 +1113,91 @@ function visibilityFilter(state = SHOW_ALL, action) {
 
 Now we can rewrite the main reducer as a function that calls the reducers managing parts of the state, and combines them into a single object. It also doesn't need to know the complete initial state anymore. It's enough that the child reducers return their initial state when given undefined at first.
 
+```
 function todos(state = [], action) {
-switch (action.type) {
-case ADD_TODO:
-return [
-...state,
-{
-text: action.text,
-completed: false
-}
-]
-case TOGGLE_TODO:
-return state.map((todo, index) => {
-if (index === action.index) {
-return Object.assign({}, todo, {
-completed: !todo.completed
-})
-}
-return todo
-})
-default:
-return state
-}
+  switch (action.type) {
+    case ADD_TODO:
+      return [
+        ...state,
+        {
+          text: action.text,
+          completed: false
+        }
+      ]
+    case TOGGLE_TODO:
+      return state.map((todo, index) => {
+        if (index === action.index) {
+          return Object.assign({}, todo, {
+            completed: !todo.completed
+          })
+        }
+        return todo
+      })
+    default:
+      return state
+  }
 }
 
 function visibilityFilter(state = SHOW_ALL, action) {
-switch (action.type) {
-case SET_VISIBILITY_FILTER:
-return action.filter
-default:
-return state
-}
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter
+    default:
+      return state
+  }
 }
 
 function todoApp(state = {}, action) {
-return {
-visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-todos: todos(state.todos, action)
+  return {
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+    todos: todos(state.todos, action)
+  }
 }
-}
-
 ```
+
 Note that each of these reducers is managing its own part of the global state. The state parameter is different for every reducer, and corresponds to the part of the state it manages.
 
 This is already looking good! When the app is larger, we can split the reducers into separate files and keep them completely independent and managing different data domains.
 
 Finally, Redux provides a utility called `combineReducers()` that does the same boilerplate logic that the todoApp above currently does. With its help, we can rewrite todoApp like this:
-```
 
+```
 import { combineReducers } from 'redux'
 
 const todoApp = combineReducers({
-visibilityFilter,
-todos
+  visibilityFilter,
+  todos
 })
 
 export default todoApp
-
 ```
+
 Note that this is equivalent to:
-```
 
+```
 export default function todoApp(state = {}, action) {
-return {
-visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-todos: todos(state.todos, action)
+  return {
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+    todos: todos(state.todos, action)
+  }
 }
-}
-
 ```
+
 You could also give them different keys, or call functions differently. These two ways to write a combined reducer are equivalent:
-```
 
+```
 const reducer = combineReducers({
-a: doSomethingWithA,
-b: processB,
-c: c
+  a: doSomethingWithA,
+  b: processB,
+  c: c
 })
 function reducer(state = {}, action) {
-return {
-a: doSomethingWithA(state.a, action),
-b: processB(state.b, action),
-c: c(state.c, action)
+  return {
+    a: doSomethingWithA(state.a, action),
+    b: processB(state.b, action),
+    c: c(state.c, action)
+  }
 }
-}
+```
 
-```
 All `combineReducers()` does is generate a function that calls your reducers with the slices of state selected according to their keys, and combining their results into a single object again. It's not magic. And like other reducers, `combineReducers()` does not create a new object if all of the reducers provided to it do not change state.
-```
