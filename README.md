@@ -24,11 +24,23 @@
     * [The Data Flows Down](#the-data-flows-down)
 
 * [Redux](#redux)
-  <!-- /TOC -->
+  * [The Three Principles](#the-three-principles)
+  * [Actions](#actions)
+  * [Reducers](#reducers)
+  * [Store](#store)
+  * [Data Flow](#data-flow)
+  * [Usage with React](#usage-with-react)
+  * [Example To-Do List](#example-to-do-list)
+    <!-- /TOC -->
 
 # React
 
 React is a component based method for rending UI using JavaScript expressions.
+
+> **A Note on This**
+> First, know that all functions in JavaScript have properties, just as objects have properties. And when a function executes, it gets the this property—a variable with the value of the object that invokes the function where this is used.
+> The this reference ALWAYS refers to (and holds the value of) an object—a singular object—and it is usually used inside a function or a method, although it can be used outside a function in the global scope. Note that when we use strict mode, this holds the value of undefined in global functions and in anonymous functions that are not bound to any object.
+> this is used inside a function (let’s say function A) and it contains the value of the object that invokes function A. We need this to access methods and properties of the object that invokes function A, especially since we don’t always know the name of the invoking object, and sometimes there is no name to use to refer to the invoking object. Indeed, this is really just a shortcut reference for the “antecedent object”—the invoking object.
 
 ## JSX
 
@@ -769,3 +781,30 @@ Each Clock sets up its own timer and updates independently.
 In React apps, whether a component is stateful or stateless is considered an implementation detail of the component that may change over time. You can use stateless components inside stateful components, and vice versa.
 
 # Redux
+
+There are three fundamental principles of Redux
+
+## The Three Principles
+
+**Single source of truth**
+The **state** of your whole application is stored in an object tree within a single store.
+
+This makes it easy to create universal apps, as the state from your server can be serialized and hydrated into the client with no extra coding effort. A single state tree also makes it easier to debug or inspect an application; it also enables you to persist your app's state in development, for a faster development cycle. Some functionality which has been traditionally difficult to implement - Undo/Redo, for example - can suddenly become trivial to implement, if all of your state is stored in a single tree.
+
+**State is read-only**
+
+> The only way to change the **state** is to emit an action, an object describing what happened.
+
+This ensures that neither the views nor the network callbacks will ever write directly to the state. Instead, they express an intent to transform the state. Because all changes are centralized and happen one by one in a strict order, there are no subtle race conditions to watch out for. As actions are just plain objects, they can be logged, serialized, stored, and later replayed for debugging or testing purposes.
+
+**Changes are made with pure functions**
+
+> To specify how the state tree is transformed by actions, you write pure **reducers**.
+
+**Reducers** are just pure functions that take the previous state and an action, and return the next state. Remember to return new state objects, instead of mutating the previous state. You can start with a single reducer, and as your app grows, split it off into smaller reducers that manage specific parts of the state tree. Because reducers are just functions, you can control the order in which they are called, pass additional data, or even make reusable reducers for common tasks such as pagination.
+
+## Actions
+
+First, let's define some actions.
+
+Actions are payloads of information that send data from your application to your store. They are the only source of information for the store. You send them to the store using `store.dispatch()`
