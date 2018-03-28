@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-* [React](#react)
+* [React Basics](#react-basics)
 
   * [JSX](#jsx)
     * [JSX Represents Objects](#jsx-represents-objects)
@@ -25,17 +25,21 @@
       * [State Updates are Merged](#state-updates-are-merged)
     * [The Data Flows Down](#the-data-flows-down)
 
-* [Redux](#redux)
+* [Redux Basics](#redux-basics)
+
   * [The Three Principles](#the-three-principles)
   * [Actions](#actions)
+    * [Action Creators](#action-creators)
   * [Reducers](#reducers)
+    * [Designing the State Shape](#designing-the-state-shape)
   * [Store](#store)
+
   * [Data Flow](#data-flow)
   * [Usage with React](#usage-with-react)
   * [Example To-Do List](#example-to-do-list)
     <!-- /TOC -->
 
-# React
+# React Basics
 
 React is a component based method for rending UI using JavaScript expressions.
 
@@ -783,7 +787,7 @@ Each Clock sets up its own timer and updates independently.
 
 In React apps, whether a component is stateful or stateless is considered an implementation detail of the component that may change over time. You can use stateless components inside stateful components, and vice versa.
 
-# Redux
+# Redux Basics
 
 There are three fundamental principles of Redux
 
@@ -852,3 +856,88 @@ boundCompleteTodo(index)
 ```
 
 The dispatch() function can be accessed directly from the store as `store.dispatch()`, but more likely you'll access it using a helper like react-redux's `connect()`. You can use `bindActionCreators()` to automatically bind many action creators to a `dispatch()` function.
+
+Action creators can also be asynchronous and have side-effects.
+
+## Reducers
+
+**Reducers** specify how the application's state changes in response to actions sent to the store. Remember that actions only describe the fact that something happened, but don't describe how the application's state changes
+
+#### Designing the State Shape
+
+In Redux, all the application state is stored as a single object.
+
+In a more complex app, you're going to want different entities to reference each other. We suggest that you keep your state as normalized as possible, without any nesting. Keep every entity in an object stored with an ID as a key, and use IDs to reference it from other entities, or lists. Think of the app's state as a database.
+
+#### Handling Actions
+
+Now that we've decided what our state object looks like, we're ready to write a reducer for it. The reducer is a pure function that takes the previous state and an action, and returns the next state.
+
+```
+(previousState, action) => newState
+```
+
+It's called a reducer because it's the type of function you would pass to `Array.prototype.reduce(reducer, ?initialValue)`. It's very important that the reducer stays pure. Things you should never do inside a reducer:
+
+1.  Mutate its arguments;
+
+2.  Perform side effects like API calls and routing transitions;
+
+3.  Call non-pure functions, e.g. `Date.now(`) or `Math.random()`
+
+Remember that the reducer must be pure. Given the same arguments, it should calculate the next state and return it. No surprises. No side effects. No API calls. No mutations. Just a calculation.
+
+start by specifying the initial state. Redux will call our reducer with an undefined state for the first time. This is our chance to return the initial state of our app:
+
+```
+import { VisibilityFilters } from './actions'
+
+const initialState = {
+  visibilityFilter: VisibilityFilters.SHOW_ALL,
+  todos: []
+}
+
+function todoApp(state, action) {
+  if (typeof state === 'undefined') {
+    return initialState
+  }
+
+  // For now, don't handle any actions
+  // and just return the state given to us.
+  return state
+}
+```
+
+One neat trick is to use the ES6 default arguments syntax to write this in a more compact way:
+
+```
+function todoApp(state = initialState, action) {
+  // For now, don't handle any actions
+  // and just return the state given to us.
+  return state
+}
+```
+
+Now let's handle `SET_VISIBILITY_FILTER`. All it needs to do is to change visibilityFilter on the state. Easy:
+
+```
+function todoApp(state = initialState, action) {
+  switch (action.type) {
+    case SET_VISIBILITY_FILTER:
+      return Object.assign({}, state, {
+        visibilityFilter: action.filter
+      })
+    default:
+      return state
+  }
+}
+```
+
+> **Note that**
+
+We don't mutate the state. We create a copy with `Object.assign()`. `Object.assign(state, { visibilityFilter: action.filter })` is also wrong: it will mutate the first argument. You must supply an empty object as the first parameter. You can also enable the object spread operator proposal to write `{ ...state, ...newState }` instead.
+
+We return the previous state in the default case. It's important to return the previous state for any unknown action.
+
+> **Note on Object.assign**
+> `Object.assign()` is a part of ES6, and is not supported by older browsers.
