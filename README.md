@@ -22,7 +22,9 @@
       * [State Updates May Be Asynchronous](#state-updates-may-be-asynchronous)
       * [State Updates are Merged](#state-updates-are-merged)
     * [The Data Flows Down](#the-data-flows-down)
-      <!-- /TOC -->
+
+* [Redux](#redux)
+  <!-- /TOC -->
 
 # React
 
@@ -765,3 +767,5 @@ ReactDOM.render(
 Each Clock sets up its own timer and updates independently.
 
 In React apps, whether a component is stateful or stateless is considered an implementation detail of the component that may change over time. You can use stateless components inside stateful components, and vice versa.
+
+# Redux
