@@ -455,7 +455,7 @@ class Clock extends React.Component {
 }
 ```
 
-Add a class constructor that assigns the initial this.state:
+Add a class constructor that assigns the initial `this.state`:
 
 ```
 class Clock extends React.Component {
@@ -640,7 +640,7 @@ Let’s quickly recap what’s going on and the order in which the methods are c
 
 ## Using State Correctly
 
-There are three things to know about setState()
+There are three things to know about `setState()`
 
 #### Do Not Modify State Directly
 
@@ -658,7 +658,7 @@ Instead, use `setState()`:
 this.setState({comment: 'Hello'});
 ```
 
-The only place where you can assign this.state is the constructor.
+The only place where you can assign `this.state` is the constructor.
 
 #### State Updates May Be Asychronous
 
@@ -710,7 +710,7 @@ For example, your state may contain several independent variables:
   }
 ```
 
-Then you can update them independently with separate setState() calls:
+Then you can update them independently with separate `setState()` calls:
 
 ```
   componentDidMount() {
