@@ -89,7 +89,7 @@ const element = React.createElement(
 );
 ```
 
-React.createElement() performs a few checks to help you write bug-free code but essentially it creates an object like this:
+`React.createElement()` performs a few checks to help you write bug-free code but essentially it creates an object like this:
 
 ```
 // Note: this structure is simplified
@@ -139,7 +139,7 @@ ReactDOM.render(element, document.getElementById('root'));
 
 > **React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time**
 
-With our knowledge so far, the only way to update the UI is to create a new element, and pass it to ReactDOM.render().
+With our knowledge so far, the only way to update the UI is to create a new element, and pass it to `ReactDOM.render()`.
 
 Consider this ticking clock example:
 
@@ -156,7 +156,7 @@ function tick() {
 setInterval(tick, 1000);
 ```
 
-It calls ReactDOM.render() every second from a setInterval() callback.
+It calls `ReactDOM.render()` every second from a setInterval() callback.
 
 #### React Only Updates What’s Necessary
 
@@ -347,7 +347,7 @@ React is pretty flexible but it has a single strict rule:
 
 So far we have only learned one way to update the UI.
 
-We call ReactDOM.render() to change the rendered output:
+We call `ReactDOM.render()` to change the rendered output:
 
 ```
 function tick() {
@@ -411,11 +411,11 @@ Components defined as classes have some additional features. Local state is exac
 
 2.  Create an ES6 class, with the same name, that extends React.Component.
 
-3.  Add a single empty method to it called render().
+3.  Add a single empty method to it called `render()`.
 
-4.  Move the body of the function into the render() method.
+4.  Move the body of the function into the `render()` method.
 
-5.  Replace props with this.props in the render() body.
+5.  Replace props with `this.props` in the `render()` body.
 
 6.  Delete the remaining empty function declaration.
 
@@ -440,7 +440,7 @@ This lets us use additional features such as local state and lifecycle hooks.
 
 We will move the date from props to state in three steps:
 
-Replace this.props.date with this.state.date in the render() method:
+Replace `this.props.date` with `this.state.date` in the render() method:
 
 ```
 class Clock extends React.Component {
@@ -486,7 +486,7 @@ Note how we pass props to the base constructor:
 
 Class components should always call the base constructor with props.
 
-Remove the date prop from the <Clock /> element:
+Remove the date prop from the `<Clock />` element:
 
 ```
 ReactDOM.render(
@@ -557,7 +557,7 @@ class Clock extends React.Component {
 
 These methods are called **“lifecycle hooks”**.
 
-The componentDidMount() hook runs after the component output has been rendered to the DOM. This is a good place to set up a timer:
+The `componentDidMount()` hook runs after the component output has been rendered to the DOM. This is a good place to set up a timer:
 
 ```
 componentDidMount() {
@@ -570,11 +570,11 @@ componentDidMount() {
 
 Note how we save the timer ID right on this.
 
-While this.props is set up by React itself and this.state has a special meaning, you are free to add additional fields to the class manually if you need to store something that is not used for the visual output.
+While `this.props` is set up by React itself and this.state has a special meaning, you are free to add additional fields to the class manually if you need to store something that is not used for the visual output.
 
-If you don’t use something in render(), it shouldn’t be in the state.
+If you don’t use something in `render()`, it shouldn’t be in the state.
 
-We will tear down the timer in the componentWillUnmount() lifecycle hook:
+We will tear down the timer in the `componentWillUnmount()` lifecycle hook:
 
 ```
   componentWillUnmount() {
@@ -582,9 +582,9 @@ We will tear down the timer in the componentWillUnmount() lifecycle hook:
   }
 ```
 
-Finally, we will implement a method called tick() that the Clock component will run every second.
+Finally, we will implement a method called `tick()` that the Clock component will run every second.
 
-It will use this.setState() to schedule updates to the component local state:
+It will use `this.setState()` to schedule updates to the component local state:
 
 ```
 class Clock extends React.Component {
@@ -628,15 +628,15 @@ ReactDOM.render(
 
 Let’s quickly recap what’s going on and the order in which the methods are called:
 
-1.  When <Clock /> is passed to ReactDOM.render(), React calls the constructor of the Clock component. Since Clock needs to display the current time, it initializes this.state with an object including the current time. We will later update this state.
+1.  When `<Clock />` is passed to `ReactDOM.render()`, React calls the constructor of the Clock component. Since Clock needs to display the current time, it initializes `this.state` with an object including the current time. We will later update this state.
 
-2.  React then calls the Clock component’s render() method. This is how React learns what should be displayed on the screen. React then updates the DOM to match the Clock’s render output.
+2.  React then calls the Clock component’s `render()` method. This is how React learns what should be displayed on the screen. React then updates the DOM to match the Clock’s render output.
 
-3.  When the Clock output is inserted in the DOM, React calls the componentDidMount() lifecycle hook. Inside it, the Clock component asks the browser to set up a timer to call the component’s tick() method once a second.
+3.  When the Clock output is inserted in the DOM, React calls the `componentDidMount()` lifecycle hook. Inside it, the Clock component asks the browser to set up a timer to call the component’s `tick()` method once a second.
 
-4.  Every second the browser calls the tick() method. Inside it, the Clock component schedules a UI update by calling setState() with an object containing the current time. Thanks to the setState() call, React knows the state has changed, and calls the render() method again to learn what should be on the screen. This time, this.state.date in the render() method will be different, and so the render output will include the updated time. React updates the DOM accordingly.
+4.  Every second the browser calls the `tick()` method. Inside it, the Clock component schedules a UI update by calling setState() with an object containing the current time. Thanks to the `setState()` call, React knows the state has changed, and calls the `render()` method again to learn what should be on the screen. This time, `this.state.date` in the `render()` method will be different, and so the render output will include the updated time. React updates the DOM accordingly.
 
-5.  If the Clock component is ever removed from the DOM, React calls the componentWillUnmount() lifecycle hook so the timer is stopped.
+5.  If the Clock component is ever removed from the DOM, React calls the `componentWillUnmount()` lifecycle hook so the timer is stopped.
 
 ## Using State Correctly
 
@@ -651,7 +651,7 @@ For example, this will not re-render a component:
 this.state.comment = 'Hello';
 ```
 
-Instead, use setState():
+Instead, use `setState()`:
 
 ```
 // Correct
@@ -662,9 +662,9 @@ The only place where you can assign this.state is the constructor.
 
 #### State Updates May Be Asychronous
 
-React may batch multiple setState() calls into a single update for performance.
+React may batch multiple `setState()` calls into a single update for performance.
 
-Because this.props and this.state may be updated asynchronously, you should not rely on their values for calculating the next state.
+Because `this.props` and `this.state` may be updated asynchronously, you should not rely on their values for calculating the next state.
 
 For example, this code may fail to update the counter:
 
@@ -675,7 +675,7 @@ this.setState({
 });
 ```
 
-To fix it, use a second form of setState() that accepts a function rather than an object. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument:
+To fix it, use a second form of `setState()` that accepts a function rather than an object. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument:
 
 ```
 // Correct
@@ -696,7 +696,7 @@ this.setState(function(prevState, props) {
 
 #### State Updates are Merged
 
-When you call setState(), React merges the object you provide into the current state.
+When you call `setState()`, React merges the object you provide into the current state.
 
 For example, your state may contain several independent variables:
 
@@ -728,7 +728,7 @@ Then you can update them independently with separate setState() calls:
   }
 ```
 
-The merging is shallow, so this.setState({comments}) leaves this.state.posts intact, but completely replaces this.state.comments.
+The merging is shallow, so `this.setState({comments})` leaves `this.state.posts` intact, but completely replaces `this.state.comments`.
 
 #### The Data Flows Down
 
@@ -810,4 +810,44 @@ This ensures that neither the views nor the network callbacks will ever write di
 
 First, let's define some actions.
 
-Actions are payloads of information that send data from your application to your store. They are the only source of information for the store. You send them to the store using `store.dispatch()`
+**Actions** are payloads of information that send data from your application to your store. They are the only source of information for the store. You send them to the store using `store.dispatch()`
+
+**Actions** are plain JavaScript objects. Actions must have a **type** property that indicates the type of action being performed. Types should typically be defined as string constants. Once your app is large enough, you may want to move them into a separate module.
+
+#### Action Creators
+
+Action creators are exactly that—functions that create actions. It's easy to conflate the terms “action” and “action creator”, so do your best to use the proper term.
+
+In Redux, action creators simply return an action:
+
+```
+function addTodo(text) {
+  return {
+    type: ADD_TODO,
+    text
+  }
+}
+```
+
+To actually initiate a dispatch, pass the result to the `dispatch()` function:
+
+```
+dispatch(addTodo(text))
+dispatch(completeTodo(index))
+```
+
+Alternatively, you can create a bound action creator that automatically dispatches:
+
+```
+const boundAddTodo = text => dispatch(addTodo(text))
+const boundCompleteTodo = index => dispatch(completeTodo(index))
+```
+
+Now you'll be able to call them directly:
+
+```
+boundAddTodo(text)
+boundCompleteTodo(index)
+```
+
+The dispatch() function can be accessed directly from the store as `store.dispatch()`, but more likely you'll access it using a helper like react-redux's `connect()`. You can use `bindActionCreators()` to automatically bind many action creators to a `dispatch()` function.
