@@ -43,7 +43,7 @@
 
 React is a component based method for rending UI using JavaScript expressions.
 
-#### **A Note on This**
+> **A Note on This**
 
 1.  First, know that all functions in JavaScript have properties, just as objects have properties. And when a function executes, it gets the this property—a variable with the value of the object that invokes the function where this is used.
 2.  The this reference ALWAYS refers to (and holds the value of) an object—a singular object—and it is usually used inside a function or a method, although it can be used outside a function in the global scope. Note that when we use strict mode, this holds the value of undefined in global functions and in anonymous functions that are not bound to any object.
@@ -940,4 +940,5 @@ We don't mutate the state. We create a copy with `Object.assign()`. `Object.assi
 We return the previous state in the default case. It's important to return the previous state for any unknown action.
 
 > **Note on Object.assign**
-> `Object.assign()` is a part of ES6, and is not supported by older browsers.
+
+`Object.assign()` is a part of ES6, and is not supported by older browsers.
