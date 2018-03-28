@@ -1,5 +1,7 @@
 <!-- TOC -->
 
+## Table of Contents
+
 * [React](#react)
 
   * [JSX](#jsx)
