@@ -4,6 +4,7 @@
 
 * [React Basics](#react-basics)
 
+  * [React Essentials and Tips](#react-essentials-and-tips)
   * [JSX](#jsx)
     * [JSX Represents Objects](#jsx-represents-objects)
   * [Rendering Elements](#rendering-elements)
@@ -44,7 +45,9 @@
 
 # React Basics
 
-React is a component based method for rending UI using JavaScript expressions.
+#### React Essentials and Tips
+
+1.  For
 
 **A Note on This**
 
