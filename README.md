@@ -52,9 +52,10 @@
     * [app.route()](<#app.route()>)
     * [express.Router](#express.router)
 
+* [Mongoose Basics](#mongoose-basics)
+
 * [Axios Basics](#axios-basics)
 
-* [Mongoose Basics](#mongoose-basics)
 
     <!-- /TOC -->
 
