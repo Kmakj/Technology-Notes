@@ -16,7 +16,6 @@
     * [Rendering a Component](#rendering-a-component)
     * [Props are Read-Only](props-are-read-only)
   * [State and Lifecycle](#state-and-lifecycle)
-
     * [Converting a Function to a Class](#converting-a-function-to-a-class)
     * [Adding Local State to a Class](#adding-local-state-to-a-class)
     * [Adding Lifecyle methods to a Class](#adding-lifecycle-methods-to-a-class)
@@ -41,13 +40,29 @@
   * [Usage with React](#usage-with-react)
   * [Example To-Do List](#example-to-do-list)
 
+* [Express Basics](#express-basics)
+
+  * [Basic Routing](#basic-routing)
+  * [Routing](#routing)
+    * [Route Methods](#route-methods)
+    * [Route Paths](#route-paths)
+      * [Route Parameters](#route-parameters)
+    * [Route Handlers](#route-handlers)
+    * [Response Methods](#response-methods)
+    * [app.route()](<#app.route()>)
+    * [express.Router](#express.router)
+
+* [Axios Basics](#axios-basics)
+
+* [Mongoose Basics](#mongoose-basics)
+
     <!-- /TOC -->
 
 # React Basics
 
-#### React Essentials and Tips
+React is a component based JavaScript library for building user interfaces
 
-1.  For
+#### React Essentials and Tips
 
 **A Note on This**
 
@@ -57,7 +72,7 @@
 
 ## JSX
 
-After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects. **This means that you can use JSX inside of if statements and for loops, assign it to variables, accept it as arguments, and return it from functions:**
+After compilation, JSX expressions become regular JavaScript function calls and evaluate to JavaScript objects. **This means that you can use JSX inside of if statements and for loops, assign it to variables, accept it as arguments, and return it from functions:** You can embed any JavaScript expression in JSX by wrapping it in curly braces.
 
 * You may use quotes to specify string literals as attributes:
 
@@ -795,7 +810,7 @@ In React apps, whether a component is stateful or stateless is considered an imp
 
 # Redux Basics
 
-There are three fundamental principles of Redux
+Redux is a predictable state container for JavaScript apps. There are three fundamental principles of Redux.
 
 ## The Three Principles
 
@@ -1204,3 +1219,77 @@ function reducer(state = {}, action) {
 ```
 
 All `combineReducers()` does is generate a function that calls your reducers with the slices of state selected according to their keys, and combining their results into a single object again. It's not magic. And like other reducers, `combineReducers()` does not create a new object if all of the reducers provided to it do not change state.
+
+# Express Basics
+
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+## Basic Routing
+
+Routing refers to determining how an application responds to a client request to a particular endpoint, which is a URI (or path) and a specific HTTP request method (GET, POST, and so on).
+
+Each route can have one or more handler functions, which are executed when the route is matched.
+
+Route definition takes the following structure:
+
+```
+app.METHOD(PATH, HANDLER)
+```
+
+Where:
+
+app is an instance of express.
+METHOD is an HTTP request method, in lowercase.
+PATH is a path on the server.
+HANDLER is the function executed when the route is matched.
+This tutorial assumes that an instance of express named app is created and the server is running. If you are not familiar with creating an app and starting it, see the Hello world example.
+
+The following examples illustrate defining simple routes.
+
+Respond with Hello World! on the homepage:
+
+```
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
+```
+
+Respond to POST request on the root route (/), the application’s home page:
+
+```
+app.post('/', function (req, res) {
+  res.send('Got a POST request')
+})
+```
+
+Respond to a PUT request to the /user route:
+
+```
+app.put('/user', function (req, res) {
+  res.send('Got a PUT request at /user')
+})
+```
+
+Respond to a DELETE request to the /user route:
+
+```
+app.delete('/user', function (req, res) {
+  res.send('Got a DELETE request at /user')
+})
+```
+
+## Routing
+
+#### Route Methods
+
+#### Route Paths
+
+###### Route Parameters
+
+#### Route Handlers
+
+#### Response Methods
+
+#### app.route()
+
+#### express.Router
