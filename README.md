@@ -63,7 +63,6 @@
 
   * [Getting Started](#getting-started)
   * [Schemas](#schemas)
-
     * [Defining Your Schema](#defining-your-schema)
     * [Creating a Model](#creating-a-model)
     * [Instance Methods](#instance-methods)
@@ -74,10 +73,31 @@
       * [Aliases](#aliases)
     * [Options](#options)
       * [Option: autoIndex](#option:-autoindex)
+      * [Option: bufferCommands](#option:-buffercommands)
+      * [Option: capped](#option:-capped)
+      * [Option: collection](#option:-collection)
+      * [Option: id](#option:-id)
+      * [Option: \_id](#option:-_id)
+      * [Option: minimize](#option:-minimize)
+      * [Option: read](#option:-read)
+      * [Option: shardKey](#option:-shardkey)
+      * [Option: strict](#option:-strict)
+      * [Option: strictQuery](#option:-strictquery)
+      * [Option: toJSON](#option:-tojson)
+      * [Option: toObject](#option:-toobject)
+      * [Option: typeKey](#option:-typekey)
+      * [Option: validateBeforeSave](#option:-validatebeforesave)
+      * [Option: versionKey](#option:-versionkey)
+      * [Option: collation](#option:-collation)
+      * [Option: skipVersioning](#option:-skipversioning)
+      * [Option: timestamps](#option:-timestamps)
+      * [Option: useNestedStrict](#option:-usenestedstrict)
 
-- [Axios Basics](#axios-basics)
+* [Axios Basics](#axios-basics)
 
-- [Material UI Basics](#material-ui-basics)
+  * [Example](#example)
+
+* [Material UI Basics](#material-ui-basics)
 
 
     <!-- /TOC -->
@@ -2312,3 +2332,167 @@ skipVersioning
 timestamps
 
 ###### Option: autoIndex
+
+###### Option: bufferCommands
+
+###### Option: capped
+
+###### Option: collection
+
+###### Option: id
+
+###### Option: \_id
+
+###### Option: minimize
+
+###### Option: read
+
+###### Option: shardKey
+
+###### Option: strict
+
+###### Option: strictQuery
+
+###### Option: toJSON
+
+###### Option: toObject
+
+###### Option: typeKey
+
+###### Option: validateBeforeSave
+
+###### Option: versionKey
+
+###### Option: collation
+
+###### Option: skipVersioning
+
+###### Option: timestamps
+
+###### Option: useNestedStrict
+
+#### Pluggable
+
+# Axios Basics
+
+## Example
+
+Performing a GET request
+
+```
+// Make a request for a user with a given ID
+axios.get('/user?ID=12345')
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+// Optionally the request above could also be done as
+axios.get('/user', {
+    params: {
+      ID: 12345
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+// Want to use async/await? Add the `async` keyword to your outer function/method.
+async function getUser() {
+  try {
+    const response = await axios.get('/user?ID=12345');
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+}
+```
+
+> NOTE: async/await is part of ECMAScript 2017 and is not supported in Internet Explorer and older browsers, so use with caution.
+
+Performing a POST request
+
+```
+axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+```
+
+Performing multiple concurrent requests
+
+```
+function getUserAccount() {
+  return axios.get('/user/12345');
+}
+
+function getUserPermissions() {
+  return axios.get('/user/12345/permissions');
+}
+
+axios.all([getUserAccount(), getUserPermissions()])
+  .then(axios.spread(function (acct, perms) {
+    // Both requests are now complete
+  }));
+```
+
+## Axios API
+
+Requests can be made by passing the relevant config to axios.
+
+axios(config)
+
+```
+// Send a POST request
+axios({
+  method: 'post',
+  url: '/user/12345',
+  data: {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  }
+});
+```
+
+```
+// GET request for remote image
+axios({
+  method:'get',
+  url:'http://bit.ly/2mTM3nY',
+  responseType:'stream'
+})
+  .then(function(response) {
+  response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+});
+```
+
+axios(url[, config])
+
+```
+// Send a GET request (default method)
+axios('/user/12345');
+```
+
+## Creating an Instance
+
+You can create a new instance of axios with a custom config.
+
+```
+axios.create([config])
+const instance = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {'X-Custom-Header': 'foobar'}
+});
+```
