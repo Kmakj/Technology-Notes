@@ -62,6 +62,18 @@
 * [Mongoose Basics](#mongoose-basics)
 
   * [Getting Started](#getting-started)
+  * [Schemas](#schemas)
+
+    * [Defining Your Schema](#defining-your-schema)
+    * [Creating a Model](#creating-a-model)
+    * [Instance Methods](#instance-methods)
+    * [Statics](#statics)
+    * [Query Helpers](#query-helpers)
+    * [Indexes](#indexes)
+    * [Virtuals](#virtuals)
+      * [Aliases](#aliases)
+    * [Options](#options)
+      * [Option: autoIndex](#option:-autoindex)
 
 - [Axios Basics](#axios-basics)
 
@@ -2025,3 +2037,278 @@ Kitten.find({ name: /^fluff/ }, callback);
 ```
 
 This performs a search for all documents with a name property that begins with "Fluff" and returns the result as an array of kittens to the callback.
+
+## Schemas
+
+Everything in Mongoose starts with a Schema.
+
+#### Defining Your Schema
+
+Each schema maps to a MongoDB collection and defines the shape of the documents within that collection.
+
+```
+  var mongoose = require('mongoose');
+  var Schema = mongoose.Schema;
+
+  var blogSchema = new Schema({
+    title:  String,
+    author: String,
+    body:   String,
+    comments: [{ body: String, date: Date }],
+    date: { type: Date, default: Date.now },
+    hidden: Boolean,
+    meta: {
+      votes: Number,
+      favs:  Number
+    }
+  });
+```
+
+If you want to add additional keys later, use the `Schema#add` method.
+
+Each key in our code blogSchema defines a property in our documents which will be cast to its associated SchemaType. For example, we've defined a property title which will be cast to the String SchemaType and property date which will be cast to a Date SchemaType. Keys may also be assigned nested objects containing further key/type definitions like the meta property above.
+
+The permitted SchemaTypes are:
+
+String
+Number
+Date
+Buffer
+Boolean
+Mixed
+ObjectId
+Array
+Read more about SchemaTypes here.
+
+Schemas not only define the structure of your document and casting of properties, they also define document instance methods, static Model methods, compound indexes, and document lifecycle hooks called middleware.
+
+#### Creating a Model
+
+To use our schema definition, we need to convert our blogSchema into a Model we can work with. To do so, we pass it into mongoose.model(modelName, schema):
+
+```
+  var Blog = mongoose.model('Blog', blogSchema);
+  // ready to go!
+```
+
+#### Instance Methods
+
+Instance methods
+Instances of Models are documents. Documents have many of their own built-in instance methods. We may also define our own custom document instance methods too.
+
+```
+  // define a schema
+  var animalSchema = new Schema({ name: String, type: String });
+
+  // assign a function to the "methods" object of our animalSchema
+  animalSchema.methods.findSimilarTypes = function(cb) {
+    return this.model('Animal').find({ type: this.type }, cb);
+  };
+```
+
+Now all of our animal instances have a findSimilarTypes method available to them.
+
+```
+  var Animal = mongoose.model('Animal', animalSchema);
+  var dog = new Animal({ type: 'dog' });
+
+  dog.findSimilarTypes(function(err, dogs) {
+    console.log(dogs); // woof
+  });
+```
+
+Overwriting a default mongoose document method may lead to unpredictable results. See this for more details.
+Do not declare methods using ES6 arrow functions (=>). Arrow functions explicitly prevent binding this, so your method will not have access to the document and the above examples will not work.
+
+#### Statics
+
+Adding static methods to a Model is simple as well. Continuing with our animalSchema:
+
+```
+  // assign a function to the "statics" object of our animalSchema
+  animalSchema.statics.findByName = function(name, cb) {
+    return this.find({ name: new RegExp(name, 'i') }, cb);
+  };
+
+  var Animal = mongoose.model('Animal', animalSchema);
+  Animal.findByName('fido', function(err, animals) {
+    console.log(animals);
+  });
+```
+
+Do not declare statics using ES6 arrow functions (=>). Arrow functions explicitly prevent binding this, so the above examples will not work because of the value of this.
+
+#### Query Helpers
+
+You can also add query helper functions, which are like instance methods but for mongoose queries. Query helper methods let you extend mongoose's chainable query builder API.
+
+```
+  animalSchema.query.byName = function(name) {
+    return this.find({ name: new RegExp(name, 'i') });
+  };
+
+  var Animal = mongoose.model('Animal', animalSchema);
+  Animal.find().byName('fido').exec(function(err, animals) {
+    console.log(animals);
+  });
+```
+
+#### Indexes
+
+MongoDB supports secondary indexes. With mongoose, we define these indexes within our Schema at the path level or the schema level. Defining indexes at the schema level is necessary when creating compound indexes.
+
+```
+  var animalSchema = new Schema({
+    name: String,
+    type: String,
+    tags: { type: [String], index: true } // field level
+  });
+
+  animalSchema.index({ name: 1, type: -1 }); // schema level
+```
+
+When your application starts up, Mongoose automatically calls createIndex for each defined index in your schema. Mongoose will call createIndex for each index sequentially, and emit an 'index' event on the model when all the createIndex calls succeeded or when there was an error. While nice for development, it is recommended this behavior be disabled in production since index creation can cause a significant performance impact. Disable the behavior by setting the autoIndex option of your schema to false, or globally on the connection by setting the option autoIndex to false.
+
+```
+  mongoose.connect('mongodb://user:pass@localhost:port/database', { autoIndex: false });
+  // or
+  mongoose.createConnection('mongodb://user:pass@localhost:port/database', { autoIndex: false });
+  // or
+  animalSchema.set('autoIndex', false);
+  // or
+  new Schema({..}, { autoIndex: false });
+```
+
+Mongoose will emit an index event on the model when indexes are done building or an error occurred.
+
+```
+  // Will cause an error because mongodb has an _id index by default that
+  // is not sparse
+  animalSchema.index({ _id: 1 }, { sparse: true });
+  var Animal = mongoose.model('Animal', animalSchema);
+
+  Animal.on('index', function(error) {
+    // "_id index cannot be sparse"
+    console.log(error.message);
+  });
+```
+
+#### Virtuals
+
+Virtuals are document properties that you can get and set but that do not get persisted to MongoDB. The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value into multiple values for storage.
+
+```
+  // define a schema
+  var personSchema = new Schema({
+    name: {
+      first: String,
+      last: String
+    }
+  });
+
+  // compile our model
+  var Person = mongoose.model('Person', personSchema);
+
+  // create a document
+  var axl = new Person({
+    name: { first: 'Axl', last: 'Rose' }
+  });
+```
+
+Suppose you want to print out the person's full name. You could do it yourself:
+
+```
+console.log(axl.name.first + ' ' + axl.name.last); // Axl Rose
+```
+
+But concatenating the first and last name every time can get cumbersome. And what if you want to do some extra processing on the name, like removing diacritics? A virtual property getter lets you define a fullName property that won't get persisted to MongoDB.
+
+```
+personSchema.virtual('fullName').get(function () {
+  return this.name.first + ' ' + this.name.last;
+});
+```
+
+Now, mongoose will call your getter function every time you access the fullName property:
+
+```
+console.log(axl.fullName); // Axl Rose
+```
+
+If you use toJSON() or toObject() (or use JSON.stringify() on a mongoose document) mongoose will not include virtuals by default. Pass { virtuals: true } to either toObject() or toJSON().
+
+You can also add a custom setter to your virtual that will let you set both first name and last name via the fullName virtual.
+
+```
+personSchema.virtual('fullName').
+  get(function() { return this.name.first + ' ' + this.name.last; }).
+  set(function(v) {
+    this.name.first = v.substr(0, v.indexOf(' '));
+    this.name.last = v.substr(v.indexOf(' ') + 1);
+  });
+
+axl.fullName = 'William Rose'; // Now `axl.name.first` is "William"
+```
+
+Virtual property setters are applied before other validation. So the example above would still work even if the first and last name fields were required.
+
+Only non-virtual properties work as part of queries and for field selection. Since virtuals are not stored in MongoDB, you can't query with them.
+
+###### Aliases
+
+Aliases are a particular type of virtual where the getter and setter seamlessly get and set another property. This is handy for saving network bandwidth, so you can convert a short property name stored in the database into a longer name for code readability.
+
+```
+var personSchema = new Schema({
+  n: {
+    type: String,
+    // Now accessing `name` will get you the value of `n`, and setting `n` will set the value of `name`
+    alias: 'name'
+  }
+});
+
+// Setting `name` will propagate to `n`
+var person = new Person({ name: 'Val' });
+console.log(person); // { n: 'Val' }
+console.log(person.toObject({ virtuals: true })); // { n: 'Val', name: 'Val' }
+console.log(person.name); // "Val"
+
+person.name = 'Not Val';
+console.log(person); // { n: 'Not Val' }
+```
+
+#### Options
+
+Schemas have a few configurable options which can be passed to the constructor or set directly:
+
+```
+new Schema({..}, options);
+
+// or
+
+var schema = new Schema({..});
+schema.set(option, value);
+Valid options:
+```
+
+autoIndex
+bufferCommands
+capped
+collection
+id
+\_id
+minimize
+read
+shardKey
+strict
+strictQuery
+toJSON
+toObject  
+typeKey
+validateBeforeSave
+versionKey
+collation
+skipVersioning
+timestamps
+
+###### Option: autoIndex
