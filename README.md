@@ -61,7 +61,11 @@
 
 * [Mongoose Basics](#mongoose-basics)
 
-* [Axios Basics](#axios-basics)
+  * [Getting Started](#getting-started)
+
+- [Axios Basics](#axios-basics)
+
+- [Material UI Basics](#material-ui-basics)
 
 
     <!-- /TOC -->
@@ -1947,3 +1951,77 @@ var cookieParser = require('cookie-parser')
 // load the cookie-parsing middleware
 app.use(cookieParser())
 ```
+
+# Mongoose Basics
+
+Mongoose provides a straight-forward, schema-based solution to model your application data. It includes built-in type casting, validation, query building, business logic hooks and more, out of the box.
+
+## Getting Started
+
+With Mongoose, everything is derived from a Schema. Let's get a reference to it and define our kittens.
+
+```
+var kittySchema = mongoose.Schema({
+  name: String
+});
+```
+
+So far so good. We've got a schema with one property, name, which will be a String. The next step is compiling our schema into a Model.
+
+```
+var Kitten = mongoose.model('Kitten', kittySchema);
+```
+
+A model is a class with which we construct documents. In this case, each document will be a kitten with properties and behaviors as declared in our schema. Let's create a kitten document representing the little guy we just met on the sidewalk outside:
+
+```
+var silence = new Kitten({ name: 'Silence' });
+console.log(silence.name); // 'Silence'
+```
+
+Kittens can meow, so let's take a look at how to add "speak" functionality to our documents:
+
+```
+// NOTE: methods must be added to the schema before compiling it with mongoose.model()
+kittySchema.methods.speak = function () {
+  var greeting = this.name
+    ? "Meow name is " + this.name
+    : "I don't have a name";
+  console.log(greeting);
+}
+
+var Kitten = mongoose.model('Kitten', kittySchema);
+```
+
+Functions added to the methods property of a schema get compiled into the Model prototype and exposed on each document instance:
+
+```
+var fluffy = new Kitten({ name: 'fluffy' });
+fluffy.speak(); // "Meow name is fluffy"
+```
+
+We have talking kittens! But we still haven't saved anything to MongoDB. Each document can be saved to the database by calling its save method. The first argument to the callback will be an error if any occured.
+
+```
+  fluffy.save(function (err, fluffy) {
+    if (err) return console.error(err);
+    fluffy.speak();
+  });
+```
+
+Say time goes by and we want to display all the kittens we've seen. We can access all of the kitten documents through our Kitten model.
+
+```
+Kitten.find(function (err, kittens) {
+  if (err) return console.error(err);
+  console.log(kittens);
+})
+```
+
+We just logged all of the kittens in our db to the console. If we want to filter our kittens by name, Mongoose supports MongoDBs rich querying syntax.
+
+```
+Kitten.find({ name: /^fluff/ }, callback);
+```
+
+This performs a search for all documents with a name property that begins with "Fluff" and returns the result as an array of kittens to the callback.
