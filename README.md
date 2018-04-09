@@ -2331,6 +2331,8 @@ collation
 skipVersioning
 timestamps
 
+[Options List](http://mongoosejs.com/docs/guide.html)
+
 ###### Option: autoIndex
 
 ###### Option: bufferCommands
